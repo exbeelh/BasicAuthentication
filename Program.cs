@@ -59,17 +59,27 @@ namespace AuthenticationApp
 
         private static void CreateUser()
         {
+
             Console.Clear();
             Console.Write("First Name => ");
             string firstName = FirstNameValidation(Console.ReadLine());
 
             Console.Write("Last Name => ");
             string lastName = Console.ReadLine();
-
+            
             Console.Write("Password => ");
             string passwords = PasswordValidation(Console.ReadLine());
 
-            users.Add(new User(firstName, lastName, passwords));
+            User data = new(firstName, lastName, passwords);
+
+            if (users.Any(u => u.Username.Contains(data.Username)))
+            {
+                data.Username = $"{data.FirstName[..2]}" +
+                                 $"{data.LastName[..2]}" +
+                                 $"{users.Count(u => u.Username.ToLower().Contains(data.Username.ToLower()))}";
+            }
+
+            users.Add(data);
             Console.WriteLine();
 
             Console.WriteLine("Data has been added");
